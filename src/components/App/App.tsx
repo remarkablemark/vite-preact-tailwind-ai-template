@@ -1,25 +1,13 @@
 import { useState } from 'preact/hooks';
 
-import brands from './brands';
-
 export default function App() {
   const [count, setCount] = useState(0);
 
   return (
     <>
-      <div className="flex justify-center">
-        {brands.map(({ alt, href, src }) => (
-          <a href={href} rel="nofollow noopener" target="_blank">
-            <img
-              src={src}
-              className="m-4 h-24 hover:drop-shadow-2xl"
-              alt={alt}
-            />
-          </a>
-        ))}
-      </div>
-
-      <h1 className="my-10 text-5xl font-bold">Vite + Preact + Tailwind</h1>
+      <h1 className="my-10 text-5xl font-bold">
+        Vite + Preact + Tailwind + AI
+      </h1>
 
       <div className="p-8">
         <button
