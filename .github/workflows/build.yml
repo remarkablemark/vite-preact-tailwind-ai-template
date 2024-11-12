@@ -26,8 +26,8 @@ jobs:
         env:
           BASE: /${{ github.event.repository.name }}/
 
-      - name: Deploy
-        if: github.ref_name == 'master'
-        uses: remarkablemark/gitploy-action@v1
-        with:
-          directory: dist
+      # - name: Deploy
+      #   if: github.ref_name == 'master'
+      #   uses: remarkablemark/gitploy-action@v1
+      #   with:
+      #     directory: dist
