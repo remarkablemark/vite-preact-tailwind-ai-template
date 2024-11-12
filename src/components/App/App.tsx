@@ -14,7 +14,7 @@ export default function App() {
   ]);
 
   return (
-    <section class="relative h-screen rounded-xl border shadow sm:h-fit">
+    <section class="relative h-fit rounded-xl border shadow">
       <div class="flex items-center space-x-4 p-6">
         <img
           alt="AI Assistant"
@@ -24,7 +24,7 @@ export default function App() {
         <h1 class="text-sm font-medium">AI Assistant</h1>
       </div>
 
-      <div class="mb-20 space-y-4 px-6">
+      <div class="mb-20 h-96 space-y-4 overflow-auto px-6">
         {messages.map(({ content, role }) => (
           <p
             class={clsx(
@@ -39,7 +39,7 @@ export default function App() {
       </div>
 
       <form
-        class="absolute bottom-0 flex space-x-2 p-6"
+        class="absolute bottom-0 flex w-full space-x-2 p-6"
         onSubmit={(event) => {
           event.preventDefault();
           if (value) {
