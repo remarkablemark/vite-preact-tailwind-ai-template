@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useState } from 'preact/hooks';
+import { useEffect, useRef, useState } from 'preact/hooks';
 
 interface Message {
   content: string;
@@ -7,24 +7,31 @@ interface Message {
 }
 
 export default function App() {
+  const messagesRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState('');
   const [messages, setMessages] = useState<Message[]>([
     { content: 'How may I help you?', role: 'assistant' },
     { content: "I'm having trouble with my account.", role: 'user' },
   ]);
 
+  useEffect(() => {
+    if (messagesRef.current) {
+      messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+    }
+  }, [messages]);
+
   return (
-    <section class="relative h-fit rounded-xl border shadow">
+    <section class="flex h-fit flex-col rounded-xl border shadow">
       <div class="flex items-center space-x-4 p-6">
         <img
           alt="AI Assistant"
           class="h-10 w-10"
           src="https://ui.shadcn.com/avatars/02.png"
         />
-        <h1 class="text-sm font-medium">AI Assistant</h1>
+        <h1 class="text-md font-medium">AI Assistant</h1>
       </div>
 
-      <div class="mb-20 h-96 space-y-4 overflow-auto px-6">
+      <div class="h-96 space-y-4 overflow-auto px-6" ref={messagesRef}>
         {messages.map(({ content, role }) => (
           <p
             class={clsx(
@@ -39,7 +46,7 @@ export default function App() {
       </div>
 
       <form
-        class="absolute bottom-0 flex w-full space-x-2 p-6"
+        class="flex w-full space-x-2 p-6"
         onSubmit={(event) => {
           event.preventDefault();
           if (value) {
@@ -50,7 +57,7 @@ export default function App() {
       >
         <input
           autocomplete="off"
-          class="border-input focus-visible:ring-ring flex h-9 w-full flex-1 rounded-md border bg-transparent px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+          class="border-input focus-visible:ring-ring flex h-9 w-full flex-1 rounded-md border bg-transparent px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50"
           onInput={(event) =>
             setValue((event.target as HTMLInputElement).value)
           }
