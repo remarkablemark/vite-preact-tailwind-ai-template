@@ -13,6 +13,7 @@
     "start": "vite --open"
   },
   "dependencies": {
+    "clsx": "2.1.1",
     "preact": "10.24.3"
   },
   "devDependencies": {
