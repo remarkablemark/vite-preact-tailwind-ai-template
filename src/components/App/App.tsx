@@ -21,7 +21,7 @@ export default function App() {
   }, [messages]);
 
   return (
-    <section class="flex h-fit flex-col rounded-xl border shadow">
+    <section class="flex h-screen flex-col rounded-xl border shadow sm:h-[70vh]">
       <div class="flex items-center space-x-4 p-6">
         <img
           alt="AI Assistant"
@@ -31,7 +31,7 @@ export default function App() {
         <h1 class="text-md font-medium">AI Assistant</h1>
       </div>
 
-      <div class="h-96 space-y-4 overflow-auto px-6" ref={messagesRef}>
+      <div class="flex-1 space-y-4 overflow-auto px-6" ref={messagesRef}>
         {messages.map(({ content, role }) => (
           <p
             class={clsx(
