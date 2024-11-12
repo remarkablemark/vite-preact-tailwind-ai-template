@@ -2,16 +2,15 @@ import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'preact/hooks';
 
 interface Message {
+  role: 'user' | 'assistant' | 'system' | 'tool';
   content: string;
-  role: 'assistant' | 'system' | 'user';
 }
 
 export default function App() {
   const messagesRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState('');
   const [messages, setMessages] = useState<Message[]>([
-    { content: 'How may I help you?', role: 'assistant' },
-    { content: "I'm having trouble with my account.", role: 'user' },
+    { role: 'assistant', content: 'How may I help you?' },
   ]);
 
   useEffect(() => {
@@ -32,7 +31,7 @@ export default function App() {
       </div>
 
       <div class="flex-1 space-y-4 overflow-auto px-6" ref={messagesRef}>
-        {messages.map(({ content, role }) => (
+        {messages.map(({ role, content }) => (
           <p
             class={clsx(
               'flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm',
@@ -47,12 +46,39 @@ export default function App() {
 
       <form
         class="flex w-full space-x-2 p-6"
-        onSubmit={(event) => {
+        onSubmit={async (event) => {
           event.preventDefault();
-          if (value) {
-            setMessages(messages.concat({ content: value, role: 'user' }));
-            setValue('');
+
+          if (!value) {
+            return;
           }
+
+          const sendMessages = messages.concat({
+            role: 'user',
+            content: value,
+          });
+          setMessages(sendMessages);
+          setValue('');
+
+          const response = await fetch('http://localhost:8788/api/inference', {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ messages: sendMessages }),
+          });
+
+          if (!response.ok) {
+            return;
+          }
+
+          setMessages(
+            sendMessages.concat({
+              role: 'assistant',
+              content: (await response.json()).response,
+            }),
+          );
         }}
       >
         <input

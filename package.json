@@ -5,12 +5,14 @@
   "type": "module",
   "scripts": {
     "build": "tsc && vite build",
+    "client": "vite --open",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
     "lint:tsc": "tsc --noEmit",
     "prepare": "husky",
     "preview": "vite preview",
-    "start": "vite --open"
+    "server": "wrangler pages dev functions",
+    "start": "run-p client server"
   },
   "dependencies": {
     "clsx": "2.1.1",
