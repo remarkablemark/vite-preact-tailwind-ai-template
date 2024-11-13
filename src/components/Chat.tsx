@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { useEffect, useRef } from 'preact/hooks';
 import { API_URL, DEV } from 'src/constants';
 
+import Header from './Header';
 import SubmitButton from './SubmitButton';
 
 export default function Chat() {
@@ -39,14 +40,7 @@ export default function Chat() {
 
   return (
     <section class="flex h-screen flex-col rounded-xl border shadow sm:h-[70vh]">
-      <div class="flex items-center space-x-4 p-6">
-        <img
-          alt="AI Assistant"
-          class="h-10 w-10"
-          src="https://ui.shadcn.com/avatars/02.png"
-        />
-        <h1 class="text-md font-medium">AI Assistant</h1>
-      </div>
+      <Header />
 
       <div class="flex-1 space-y-4 overflow-auto px-6" ref={messagesRef}>
         {messages.map(({ role, content }) => (
