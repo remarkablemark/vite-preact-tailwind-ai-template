@@ -1,7 +1,7 @@
 import { useChat } from 'ai/react';
 import clsx from 'clsx';
 import { useEffect, useRef } from 'preact/hooks';
-import { API_URL, DEV } from 'src/constants';
+import { API_URL, DEV, ID } from 'src/constants';
 
 import Header from './Header';
 import SubmitButton from './SubmitButton';
@@ -20,7 +20,7 @@ export default function Chat() {
         {
           role: 'assistant',
           content: 'How may I help you?',
-          id: Date.now().toString(),
+          id: ID,
         },
       ],
 
