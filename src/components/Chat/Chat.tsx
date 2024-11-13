@@ -8,25 +8,26 @@ export default function Chat() {
 
   // https://sdk.vercel.ai/docs/ai-sdk-ui/chatbot
   // https://sdk.vercel.ai/docs/reference/ai-sdk-ui/use-chat
-  const { messages, input, handleInputChange, handleSubmit } = useChat({
-    api: `${API_URL}/api/chat`,
-    streamProtocol: 'text',
+  const { handleInputChange, handleSubmit, input, isLoading, messages } =
+    useChat({
+      api: `${API_URL}/api/chat`,
+      streamProtocol: 'text',
 
-    initialMessages: [
-      {
-        role: 'assistant',
-        content: 'How may I help you?',
-        id: Date.now().toString(),
+      initialMessages: [
+        {
+          role: 'assistant',
+          content: 'How may I help you?',
+          id: Date.now().toString(),
+        },
+      ],
+
+      onError(error) {
+        if (DEV) {
+          // eslint-disable-next-line no-console
+          console.error(error);
+        }
       },
-    ],
-
-    onError(error) {
-      if (DEV) {
-        // eslint-disable-next-line no-console
-        console.error(error);
-      }
-    },
-  });
+    });
 
   useEffect(() => {
     if (messagesRef.current) {
@@ -70,7 +71,7 @@ export default function Chat() {
 
         <button
           class="focus-visible:ring-ring inline-flex h-9 w-9 items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium shadow transition-colors hover:bg-slate-900 hover:text-slate-100 focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50"
-          disabled={!input}
+          disabled={isLoading}
           type="submit"
         >
           <svg
