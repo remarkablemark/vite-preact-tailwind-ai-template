@@ -25,9 +25,3 @@ jobs:
         run: npm run build
         env:
           BASE: /${{ github.event.repository.name }}/
-
-      # - name: Deploy
-      #   if: github.ref_name == 'master'
-      #   uses: remarkablemark/gitploy-action@v1
-      #   with:
-      #     directory: dist
