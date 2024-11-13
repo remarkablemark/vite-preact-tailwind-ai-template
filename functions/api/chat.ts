@@ -8,7 +8,7 @@ interface Env {
 
 const PROMPT = {
   role: 'system',
-  content: 'You are a helpful assistant',
+  content: 'You are a succinct helpful assistant',
 } as const;
 
 const MAX_TOKENS = 100;
