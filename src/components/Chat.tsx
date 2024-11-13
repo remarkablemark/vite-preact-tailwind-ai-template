@@ -1,8 +1,9 @@
 import { useChat } from 'ai/react';
 import clsx from 'clsx';
 import { useEffect, useRef } from 'preact/hooks';
-import { API_URL, DEV, ID } from 'src/constants';
+import { API_URL, CHAT_ID, DEV } from 'src/constants';
 
+import ChatError from './ChatError';
 import Header from './Header';
 import SubmitButton from './SubmitButton';
 
@@ -21,13 +22,14 @@ export default function Chat() {
     reload,
   } = useChat({
     api: `${API_URL}/api/chat`,
+    id: CHAT_ID,
     streamProtocol: 'text',
 
     initialMessages: [
       {
         role: 'assistant',
         content: 'How may I help you?',
-        id: ID,
+        id: '1',
       },
     ],
 
@@ -48,25 +50,7 @@ export default function Chat() {
   return (
     <section class="flex h-screen flex-col rounded-xl border shadow sm:h-[70vh]">
       <Header />
-
-      {error && (
-        <>
-          <p
-            class="mb-4 flex items-center justify-between rounded border border-red-200 bg-red-100 px-4 py-2 text-red-700"
-            role="alert"
-          >
-            <span>An error occurred.</span>
-
-            <button
-              class="w-16 rounded-md bg-white px-4 py-2 text-sm font-medium text-black shadow hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-1"
-              type="button"
-              onClick={() => reload()}
-            >
-              Retry
-            </button>
-          </p>
-        </>
-      )}
+      <ChatError error={error} reload={reload} />
 
       <div class="flex-1 space-y-4 overflow-auto px-6" ref={messagesRef}>
         {messages.map(({ role, content }) => (
