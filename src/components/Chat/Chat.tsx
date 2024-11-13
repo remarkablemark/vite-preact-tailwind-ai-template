@@ -7,7 +7,7 @@ interface Message {
   content: string;
 }
 
-export default function App() {
+export default function Chat() {
   const messagesRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState('');
   const [messages, setMessages] = useState<Message[]>([
