@@ -1,18 +1,32 @@
+import { useChat } from 'ai/react';
 import clsx from 'clsx';
-import { useEffect, useRef, useState } from 'preact/hooks';
-import { API_URL } from 'src/constants';
-
-interface Message {
-  role: 'user' | 'assistant' | 'system' | 'tool';
-  content: string;
-}
+import { useEffect, useRef } from 'preact/hooks';
+import { API_URL, DEV } from 'src/constants';
 
 export default function Chat() {
   const messagesRef = useRef<HTMLDivElement>(null);
-  const [value, setValue] = useState('');
-  const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: 'How may I help you?' },
-  ]);
+
+  // https://sdk.vercel.ai/docs/ai-sdk-ui/chatbot
+  // https://sdk.vercel.ai/docs/reference/ai-sdk-ui/use-chat
+  const { messages, input, handleInputChange, handleSubmit } = useChat({
+    api: `${API_URL}/api/chat`,
+    streamProtocol: 'text',
+
+    initialMessages: [
+      {
+        role: 'assistant',
+        content: 'How may I help you?',
+        id: Date.now().toString(),
+      },
+    ],
+
+    onError(error) {
+      if (DEV) {
+        // eslint-disable-next-line no-console
+        console.error(error);
+      }
+    },
+  });
 
   useEffect(() => {
     if (messagesRef.current) {
@@ -45,56 +59,18 @@ export default function Chat() {
         ))}
       </div>
 
-      <form
-        class="flex w-full space-x-2 p-6"
-        onSubmit={async (event) => {
-          event.preventDefault();
-
-          if (!value) {
-            return;
-          }
-
-          const sendMessages = messages.concat({
-            role: 'user',
-            content: value,
-          });
-          setMessages(sendMessages);
-          setValue('');
-
-          const response = await fetch(`${API_URL}/api/chat`, {
-            method: 'POST',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ messages: sendMessages }),
-          });
-
-          if (!response.ok) {
-            return;
-          }
-
-          setMessages(
-            sendMessages.concat({
-              role: 'assistant',
-              content: (await response.json()).response,
-            }),
-          );
-        }}
-      >
+      <form class="flex w-full space-x-2 p-6" onSubmit={handleSubmit}>
         <input
           autocomplete="off"
           class="border-input focus-visible:ring-ring flex h-9 w-full flex-1 rounded-md border bg-transparent px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50"
-          onInput={(event) =>
-            setValue((event.target as HTMLInputElement).value)
-          }
+          onInput={handleInputChange}
           placeholder="Type your message..."
-          value={value}
+          value={input}
         />
 
         <button
           class="focus-visible:ring-ring inline-flex h-9 w-9 items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium shadow transition-colors hover:bg-slate-900 hover:text-slate-100 focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50"
-          disabled={!value}
+          disabled={!input}
           type="submit"
         >
           <svg

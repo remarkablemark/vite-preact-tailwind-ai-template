@@ -1,14 +1,17 @@
+import { generateText } from 'ai';
+import { createWorkersAI } from 'workers-ai-provider';
+
+interface Env {
+  AI: Ai;
+  NODE_ENV: 'development' | 'preview' | 'production';
+}
+
 const PROMPT = {
   role: 'system',
   content: 'You are a helpful assistant',
 } as const;
 
 const MAX_TOKENS = 100;
-
-interface Env {
-  AI: Ai;
-  NODE_ENV: 'development' | 'preview' | 'production';
-}
 
 /**
  * POST /api/chat
@@ -23,17 +26,16 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
   messages.unshift(PROMPT);
 
-  const input: AiTextGenerationInput = {
-    max_tokens: MAX_TOKENS,
+  const workersai = createWorkersAI({ binding: context.env.AI });
+
+  // https://sdk.vercel.ai/providers/community-providers/cloudflare-workers-ai#generatetext
+  const result = await generateText({
+    model: workersai('@cf/meta/llama-3.1-8b-instruct'),
+    maxTokens: MAX_TOKENS,
     messages,
-  };
+  });
 
-  const output = await context.env.AI.run(
-    '@cf/meta/llama-3.1-8b-instruct',
-    input,
-  );
-
-  return Response.json(output, getResponseInit(context));
+  return new Response(result.text, getResponseInit(context));
 };
 
 /**
