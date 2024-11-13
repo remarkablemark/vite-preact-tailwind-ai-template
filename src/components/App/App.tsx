@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'preact/hooks';
+import { API_URL } from 'src/constants';
 
 interface Message {
   role: 'user' | 'assistant' | 'system' | 'tool';
@@ -60,7 +61,7 @@ export default function App() {
           setMessages(sendMessages);
           setValue('');
 
-          const response = await fetch('http://localhost:8788/api/inference', {
+          const response = await fetch(`${API_URL}/api/chat`, {
             method: 'POST',
             headers: {
               Accept: 'application/json',
