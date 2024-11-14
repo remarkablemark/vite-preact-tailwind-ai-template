@@ -38,7 +38,7 @@ export default function Chat() {
   });
 
   return (
-    <section class="flex h-screen flex-col rounded-xl border shadow sm:h-[70vh]">
+    <section class="flex h-screen flex-col rounded-xl sm:h-[70vh] sm:border sm:shadow">
       <Header />
       <ChatError error={error} reload={reload} />
       <Messages messages={messages} />
