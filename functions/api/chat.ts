@@ -11,7 +11,7 @@ const PROMPT = {
   content: 'You are a succinct helpful assistant',
 } as const;
 
-const MAX_TOKENS = 100;
+const MAX_TOKENS = 1;
 
 /**
  * POST /api/chat
