@@ -1,4 +1,4 @@
-import { generateText } from 'ai';
+import { type CoreMessage, generateText } from 'ai';
 import { createWorkersAI } from 'workers-ai-provider';
 
 interface Env {
@@ -6,7 +6,7 @@ interface Env {
   NODE_ENV: 'development' | 'preview' | 'production';
 }
 
-const PROMPT = {
+const PROMPT: CoreMessage = {
   role: 'system',
   content: 'You are a succinct helpful assistant',
 } as const;
@@ -22,7 +22,7 @@ const MAX_TOKENS = 1;
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   try {
     const { messages } = await context.request.json<{
-      messages: RoleScopedChatInput[];
+      messages: CoreMessage[];
     }>();
 
     messages.unshift(PROMPT);
