@@ -1,6 +1,6 @@
 # vite-preact-tailwind-ai-template
 
-[![build](https://github.com/remarkablemark/vite-preact-tailwind-ai-template/actions/workflows/build.yml/badge.svg)](https://github.com/remarkablemark/vite-preact-tailwind-ai-template/actions/workflows/build.yml)
+[![build](https://github.com/ai-action/vite-preact-tailwind-ai-template/actions/workflows/build.yml/badge.svg)](https://github.com/ai-action/vite-preact-tailwind-ai-template/actions/workflows/build.yml)
 
 Vite Preact Tailwind AI template.
 
@@ -9,7 +9,7 @@ Vite Preact Tailwind AI template.
 Clone the repository:
 
 ```sh
-git clone https://github.com/remarkablemark/vite-preact-tailwind-ai-template.git
+git clone https://github.com/ai-action/vite-preact-tailwind-ai-template.git
 cd vite-preact-tailwind-ai-template
 ```
 
